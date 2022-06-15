@@ -74,14 +74,13 @@ function App() {
   const getValueFromCsvData = (arr) => {
     let value = '';
     for (let val of arr) {
-      if (Number(val) !== NaN && !isNaN(val)) {
+      if (Number(val) && !isNaN(val)) {
         value = val;
         break;
       }
     }
     return value;
   };
-
 
   return (
     <>
