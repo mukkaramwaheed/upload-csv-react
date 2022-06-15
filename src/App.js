@@ -88,7 +88,7 @@ function App() {
       <header className={styles.header}>
         <Title text='Upload CSV' isWhiteText={true} />
       </header>
-      <div className={`${styles.container}`}>
+      <div className={`${styles.container} ${styles.textCenter}`}>
         <div className={`${styles.marg10}`}>
           <Suspense fallback={<div>Loading...</div>}>
             {data?.meg && <Message data={data} />}
