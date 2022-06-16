@@ -48,6 +48,11 @@
 .textCenter{
   text-align: center;
 }
+
+.font12{
+  font-size: 12px;
+}
+
 @media (min-width: 700px) {
   .header {
     margin-bottom: 5em;

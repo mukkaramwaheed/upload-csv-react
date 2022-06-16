@@ -58,11 +58,13 @@ function App() {
   const calculateResult = (targetNum, value) => {
     let record = 0;
     if (value < 0) {
+      let parseValue = Math.abs(value) / 2
       let useCsvValue = parseInt(targetNum) + parseInt(value);
-      record = parseInt(useCsvValue) + parseInt(Math.abs(value));
+      record = parseInt(useCsvValue) + parseInt(parseValue* (5-3));
     } else {
+      let parseValue = Math.abs(value) / 2;
       let useCsvValue = parseInt(targetNum) + parseInt(value);
-      record = parseInt(useCsvValue) - parseInt(value);
+      record = parseInt(useCsvValue) - parseInt(parseValue * (5-3));
     }
     return record;
   };
@@ -85,7 +87,7 @@ function App() {
   return (
     <>
       <header className={styles.header}>
-        <Title text='Upload CSV' isWhiteText={true} />
+        <Title text='Upload CSV ' isWhiteText={true} />
       </header>
       <div className={`${styles.container} ${styles.textCenter}`}>
         <div className={`${styles.marg10}`}>
@@ -115,6 +117,19 @@ function App() {
           onClick={(e) => (e.target.value = null)}
           accept='.csv'
         />
+        <hr/>
+        <div className={`${styles.marg10}`}>
+          <h5>Formula to calculate the target number</h5>
+          <pre className={`${styles.font12}`}>
+            
+            <b>Get the first value from csv</b>
+            <p>target = 500</p>
+            <p>FirstCsvValue we get = 5</p>
+            <p>total = 500 + 5 = 505</p>
+            <p>parseValue = 5/2 = 2.5</p>
+            <p>result = total - (2.5 * (5-3)) = 500</p>
+          </pre>
+        </div>
       </div>
     </>
   );
