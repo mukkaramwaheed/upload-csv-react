@@ -31,5 +31,7 @@ https://morning-brushlands-69607.herokuapp.com/
 ## Screenshots
 
 ![1](https://user-images.githubusercontent.com/17449893/173893208-2b762df4-1939-4287-8bab-cae9f70af320.png)
-![2](https://user-images.githubusercontent.com/17449893/173893284-c6697307-56e5-4649-9cc5-512e9eb4e665.png)
-![3](https://user-images.githubusercontent.com/17449893/173893294-074fbb54-134b-405e-b1e1-de33dfd5f6bd.png)
+![2](https://user-images.githubusercontent.com/17449893/174163536-93a68966-47e8-48d9-9dd2-4143b0c73f87.png)
+![3](https://user-images.githubusercontent.com/17449893/174163684-d8883084-78f8-496d-9df1-853eed3f7239.png)
+
+
