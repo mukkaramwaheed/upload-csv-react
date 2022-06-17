@@ -1,4 +1,4 @@
-import React, { useState, Suspense } from 'react';
+import React, { useState, Suspense, useEffect } from 'react';
 import Title from './components/Title';
 import styles from './App.module.css';
 import Papa from 'papaparse';
@@ -10,15 +10,17 @@ function App() {
     meg: '',
     error: false,
   });
-  const [target, setTarget] = useState('');
-
+  const [target, setTarget] = useState();
+  const [csvData, setCsvData] = useState({
+    selected: '',
+    allValues: [],
+  });
   const handlerTarget = (e) => {
     const value = e.target.value.replace(/\D/g, '');
     setTarget(value);
   };
 
   const handlerCsv = (event) => {
-
     //Reset meg state
     setData((data) => ({
       ...data,
@@ -58,13 +60,13 @@ function App() {
   const calculateResult = (targetNum, value) => {
     let record = 0;
     if (value < 0) {
-      let parseValue = Math.abs(value) / 2
+      let parseValue = Math.abs(value) / 2;
       let useCsvValue = parseInt(targetNum) + parseInt(value);
-      record = parseInt(useCsvValue) + parseInt(parseValue* (5-3));
+      record = parseInt(useCsvValue) + parseInt(parseValue * (5 - 3));
     } else {
       let parseValue = Math.abs(value) / 2;
       let useCsvValue = parseInt(targetNum) + parseInt(value);
-      record = parseInt(useCsvValue) - parseInt(parseValue * (5-3));
+      record = parseInt(useCsvValue) - parseInt(parseValue * (5 - 3));
     }
     return record;
   };
@@ -74,16 +76,39 @@ function App() {
    * @returns number
    */
   const getValueFromCsvData = (arr) => {
+    setCsvData((csvData) => ({
+      ...csvData,
+      allValues: arr,
+    }));
     let value = '';
     for (let val of arr) {
       if (Number(val) && !isNaN(val)) {
         value = val;
+        setCsvData((csvData) => ({
+          ...csvData,
+          selected: value,
+        }));
         break;
       }
     }
     return value;
   };
 
+  const resetState = () => {
+    setData({
+      meg: '',
+      error: false,
+    });
+    setCsvData({
+      allValues: [],
+      selected: '',
+    });
+  };
+  useEffect(() => {
+    if (target === '') {
+      resetState();
+    }
+  }, [target]);
   return (
     <>
       <header className={styles.header}>
@@ -117,19 +142,40 @@ function App() {
           onClick={(e) => (e.target.value = null)}
           accept='.csv'
         />
-        <hr/>
-        <div className={`${styles.marg10}`}>
-          <h5>Formula to calculate the target number</h5>
-          <pre className={`${styles.font12}`}>
-            
-            <b>Get the first value from csv</b>
-            <p>target = 500</p>
-            <p>FirstCsvValue we get = 5</p>
-            <p>total = 500 + 5 = 505</p>
-            <p>parseValue = 5/2 = 2.5</p>
-            <p>result = total - (2.5 * (5-3)) = 500</p>
-          </pre>
-        </div>
+        <hr />
+        {csvData?.selected && (
+          <div className={`${styles.marg10}`}>
+            <h5>Formula to calculate the target number</h5>
+
+            <pre className={`${styles.font12}`}>
+              <p>target = {target}</p>
+              <p>Values from csv files = {csvData.allValues.join(',')}</p>
+              <p>
+                Only single value we used from csv which is ={' '}
+                {csvData?.selected}
+              </p>
+              <p>
+                total = {target} + {csvData?.selected} ={' '}
+                {parseFloat(target) + parseFloat(csvData.selected)}
+              </p>
+              <p>
+                Get the half value of selected csv = {csvData.selected}/{2} ={' '}
+                {csvData.selected / 2}
+              </p>
+              <p>
+                result = {parseFloat(target) + parseFloat(csvData.selected)} - (
+                {csvData.selected / 2} * (5-3)) ={' '}
+                <b>
+                  {parseFloat(
+                    parseFloat(target) +
+                      parseFloat(csvData.selected) -
+                      (csvData.selected / 2) * (5 - 3)
+                  )}
+                </b>
+              </p>
+            </pre>
+          </div>
+        )}
       </div>
     </>
   );
