@@ -1,6 +1,3 @@
-
-
-
 const getNumbers = (arr, targetSum) => {
   if ((arr && arr.length === 0) || targetSum === undefined) {
     return false;
@@ -16,7 +13,7 @@ const getNumbers = (arr, targetSum) => {
         let mid = parseInt((start + end) / 2);
         if (arr[mid] === partnerInPair) {
           if (arr[x] !== undefined && arr[mid] !== undefined)
-            data[index] = arr[x]+','+arr[mid];
+            data[index] = arr[x] + ',' + arr[mid];
           break;
         } else if (partnerInPair < arr[mid]) {
           end = mid - 1;
@@ -26,75 +23,77 @@ const getNumbers = (arr, targetSum) => {
       }
       index++;
     }
-    return data?.filter(val => val !== undefined || val !== '');
+    return data?.filter((val) => val !== undefined || val !== '');
   }
 };
 
-
 const getRandomItemArr = (arr) => {
-    // console.log('change 44', arr);
-    return arr[Math.floor(Math.random()*arr.length)];
-}
+  return arr[Math.floor(Math.random() * arr.length)];
+};
+
+const createUniqueAndValidArray = (arr) => {
+
+    if (arr && Array.isArray(arr)) {
+        let result = arr?.filter((val) => {
+            if (Number(val) && !isNaN(val)) {
+               return val
+            } 
+        });
+        return result;
+    } 
+    return false
+};
 
 export const getEquation = (arr, values) => {
-  let data = [];
-  let i = 0;
-  for (let val of values) {
-    data[i] = getNumbers(arr, val);
-    i++;
-  }
+    let uniqueArr = createUniqueAndValidArray(arr);
+    if (uniqueArr && uniqueArr.length > 0) {
+        let data = [];
+        let i = 0;
+        for (let val of values) {
+            data[i] = getNumbers(uniqueArr, val);
+            i++;
+        }
 
-  if (data) {
-        for (let j = 0; j < data.length; j++) {
+        if (data) {
+            for (let j = 0; j < data.length; j++) {
             if (data[j]) {
                 data[j] = getRandomItemArr(data[j]);
             }
+            }
         }
-   }
 
-    // let result = (7 - 3) * (5 + 8 * (4 + 12));
-  if (data) {
-    for (let k = 0; k < data.length; k++) {
-        if (data[k]) {
-            data[k]['string'] = `${data[k]}`;    
+        let result = [];
+        if (data) {
+            for (let k = 0; k < data.length; k++) {
+            if (data[k]) {
+                result[k] = getOprand(data[k], values[k]);
+            }
+            }
         }
+        result =
+            '((' +
+            result[0] +
+            ')) * ' +
+            '(' +
+            result[1] +
+            ' * (' +
+            result[2] +
+            '))';
+        console.log('change 123', result);
+        return eval(result);
+    } else {
+        return false
     }
-  }  
-  return data;
-}
+};
 
-
-const getOprand = (value) => {
-    if (value) {
-        
-    }
-}
-// 0: "1,3"
-// ​
-// 1: "5,8"
-// ​
-// 2: "2,6"
-// ​
-// 3: "4,8"
-
-// const calculateResult = (data) => {
-
-//     let result = randomItem.split(",")
- 
-//     if(result){
-    
-//     let info = parseFloat(result[0]) * parseFloat(result[1]) == 0 ?  
-//     (
-//     '+'
-//     ): '*'
-
-    
-// }
-
-/* let result = (
-(7 - 3)*(5 + 8 * (4 + 12))
-) */
-
-// 4
-// 13,
-// 16
+const getOprand = (value, equalNum) => {
+  if (value) {
+    let result = value.split(',');
+    let info =
+      parseFloat(result[0]) * parseFloat(result[1]) === equalNum ? '*' : '+';
+    let getEquation = `${parseFloat(result[0])} ${info} ${parseFloat(
+      result[1]
+    )}`;
+    return getEquation;
+  }
+};

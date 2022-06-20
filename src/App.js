@@ -3,24 +3,19 @@ import Title from './components/Title';
 import styles from './App.module.css';
 import Papa from 'papaparse';
 import { getEquation } from './components/utilis';
-// import { ERROR_MEG, SUCCESS_MEG } from './components/Constant';
-const Message = React.lazy(() => import('./components/Message'));
 
 function App() {
   const [data, setData] = useState({
-    meg: '',
-    error: false,
+    formula: '',
+    result: ''
   });
   const [target, setTarget] = useState();
-  const [csvData, setCsvData] = useState({
-    allValues: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 9],
-    // allValues: [12,13,14,15,16,17]
-  });
 
-
-  const result = getEquation([...new Set(csvData.allValues)], [4,13,8,12]);
-  console.log('change 1', result);
-
+  const calResult = getEquation(
+    [...new Set([0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12])],
+    [4, 13, 8, 12]
+  );
+  console.log('change 1', calResult);
   const handlerTarget = (e) => {
     const value = e.target.value.replace(/\D/g, '');
     setTarget(value);
@@ -39,37 +34,22 @@ function App() {
       header: true,
       skipEmptyLines: false,
       complete: function (results) {
-        
+          const data = getEquation(
+            [...new Set(results)],
+            [4, 13, 8, 12]
+          );
+        console.log('change ', data);
+
       },
     });
   };
 
-  const resetState = () => {
-    setData({
-      meg: '',
-      error: false,
-    });
-    setCsvData({
-      allValues: [],
-      selected: '',
-    });
-  };
-  useEffect(() => {
-    if (target === '') {
-      resetState();
-    }
-  }, [target]);
   return (
     <>
       <header className={styles.header}>
         <Title text='Upload CSV ' isWhiteText={true} />
       </header>
       <div className={`${styles.container} ${styles.textCenter}`}>
-        <div className={`${styles.marg10}`}>
-          <Suspense fallback={<div>Loading...</div>}>
-            {data?.meg && <Message data={data} />}
-          </Suspense>
-        </div>
         <div className={`${styles.marg10}`}>
           <span className={`${styles.margRight15}`}>
             Set target
