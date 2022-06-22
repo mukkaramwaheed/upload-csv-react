@@ -36,7 +36,7 @@ const getRandomItemArr = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
-const createUniqueAndValidArray = (arr) => {
+export const createUniqueAndValidArray = (arr) => {
   if (arr && Array.isArray(arr)) {
     let result = arr?.filter((val) => {
       if (Number(val) && !isNaN(val)) {
@@ -83,3 +83,42 @@ export const getResult = (data) => {
   return result;
 };
 
+
+export const createEquation = (arr) => {
+  let uniqueArr = createUniqueAndValidArray(arr);
+}
+
+export const calculateArr = (dataArray) => {
+  let formatedArr = createUniqueAndValidArray(dataArray);
+  let data = {};
+  let result = [];
+  for (var i = 0; i < formatedArr.length; i++) {
+    for (var j = 0; j < formatedArr.length; j++) {
+      let mul = formatedArr[i] + '*' + formatedArr[j];
+
+      let plu = formatedArr[i] + '+' + formatedArr[j];
+
+      let div = formatedArr[i] + '/' + formatedArr[j];
+
+      let minus = formatedArr[i] + '-' + formatedArr[j];
+
+      data[mul] = formatedArr[i] * formatedArr[j];
+      data[plu] = parseFloat(formatedArr[i]) + parseFloat(formatedArr[j]);
+      data[div] = parseFloat(formatedArr[i]) / parseFloat(formatedArr[j]);
+      data[minus] = parseFloat(formatedArr[i]) - parseFloat(formatedArr[j]);
+      result.push(data);
+    }
+  }
+
+  let unique = Array.from(new Set(result.map(JSON.stringify))).map(JSON.parse);
+  return unique;
+};
+
+export const checkValuesExistInCsv = (arr, csvArr) => {
+
+  if (arr.every((r) => csvArr.includes(r))) {
+    console.log('Found all of', ar1, 'in', ar2);
+  } else {
+    return false
+  }
+}
