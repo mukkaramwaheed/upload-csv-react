@@ -2,16 +2,17 @@ import React, { useState, useEffect } from 'react';
 import styles from './App.module.css';
 import Title from './components/Title';
 import Papa from 'papaparse';
-import { getEquation } from './components/utilis';
+import { calculateArr, createEquation, createUniqueAndValidArray, getEquation } from './components/utilis';
 
 function App() {
   const [data, setData] = useState({
     formula: '',
     result: '',
+    meg: '',
     sumValues: [],
     values: [],
   });
-
+  const targetArr = []
   const [target, setTarget] = useState(532);
   const handlerTarget = (e) => {
     const value = e.target.value.replace(/\D/g, '');
@@ -34,21 +35,33 @@ function App() {
 
   const info = (data) => {
     if (data && data.length > 0) {
-      let copyData = [...data];
-      let result = getEquation([...new Set(copyData)], [4, 13, 16]);
+      let result = createUniqueAndValidArray(data);
+      if (result && result?.length > 0) {
+        let status = result.find(val => parseFloat(val) === parseFloat(target))
+        if (status) {
+          setData(data => ({
+            ...data,
+            result: true,
+            meg: 'Target value found in the existing csv result'
+          })) 
+        }
+        // else if (checkValuesExistInCsv()) {
+        // }
+      }
       return result;
     }
   };
 
   useEffect(() => {
-    info(data.values);
+    let copyCsvValues = [...data.values];
+    info(copyCsvValues);
   }, [data.values]);
 
   return (
     <>
-      {/* <header className={styles.header}>
+      <header className={styles.header}>
         <Title text='Upload CSV ' isWhiteText={true} />
-      </header> */}
+      </header>
       <div className={`${styles.container} ${styles.textCenter}`}>
         <div className={`${styles.marg10}`}>
           <span className={`${styles.margRight15}`}>
@@ -72,6 +85,7 @@ function App() {
           onClick={(e) => (e.target.value = null)}
           accept='.csv'
         />
+        <div className={`${styles.marg10}`}>{data.result && data.meg}</div>
       </div>
     </>
   );
