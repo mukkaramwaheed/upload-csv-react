@@ -1,3 +1,107 @@
+/**
+ * Create unique array with valid values
+ * @param {*} arr
+ * @returns array
+ */
+export const createUniqueAndValidArray = (arr) => {
+  if (arr && Array.isArray(arr)) {
+    let result = arr
+      ?.filter((val) => Number(val) && !isNaN(val))
+      .map((val) => parseFloat(val));
+    return result;
+  }
+  return false;
+};
+
+/**
+ * This function match targetArr
+ * values with the csv values if all
+ * the values that need to create
+ * target value exist then return true
+ *
+ * @param {*} arr
+ * @param {*} csvArr
+ * @returns bolean
+ */
+export const checkValuesExistInCsv = (arr, csvArr) => {
+  if (arr.every((r) => csvArr.includes(r))) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
+/**
+ *
+ * @param {*} type
+ * @param {*} meg
+ * @returns String
+ */
+export const showMeg = (type, meg) => {
+  if (type === 'success') {
+    return `Success: ${meg}`;
+  } else if (type === 'error') {
+    return `Error: ${meg}`;
+  }
+};
+
+/**
+ * Create string formule and calculate the value
+ * @param {*} eq
+ * @param {*} eqTwo
+ * @param {*} eqThree
+ * @returns Object
+ */
+export const getResult = (eq, eqTwo, eqThree) => {
+  let sortEq = sortArrDescend(eq);
+
+  let equation = `((${sortEq[0]}-${sortEq[1]}) * (${eqTwo[0]} + ${eqTwo[1]} * ( ${eqThree[0]} + ${eqThree[1]} ))`;
+
+  let value =
+    (parseFloat(sortEq[0]) - parseFloat(sortEq[1])) *
+    (parseFloat(eqTwo[0]) +
+      parseFloat(eqTwo[1]) * (parseFloat(eqThree[0]) + parseFloat(eqThree[1])));
+  return {
+    equation,
+    value,
+  };
+};
+
+/**
+ * Sort the array in descending order
+ * @param {*} arr
+ * @returns array
+ */
+export const sortArrDescend = (arr) => {
+  return arr.sort(function (a, b) {
+    return b - a;
+  });
+};
+
+/**
+ * Create formula
+ * @param {*} arr
+ * @returns Object
+ */
+export const createEquation = (arr) => {
+  let equation = [];
+  let equationtwo = [];
+  let equationThree = [];
+
+  arr?.forEach((val) => {
+    if (val === 3 || val === 7) {
+      equation.push(val);
+    } else if (val === 8 || val === 5) {
+      equationtwo.push(val);
+    } else if (val === 12 || val === 4) {
+      equationThree.push(val);
+    }
+  });
+
+  let getEqAndValue = getResult(equation, equationtwo, equationThree);
+  return getEqAndValue;
+};
+
 export const getNumbers = (arr, targetSum) => {
   if ((arr && arr.length === 0) || targetSum === undefined) {
     return false;
@@ -36,18 +140,6 @@ const getRandomItemArr = (arr) => {
   return arr[Math.floor(Math.random() * arr.length)];
 };
 
-export const createUniqueAndValidArray = (arr) => {
-  if (arr && Array.isArray(arr)) {
-    let result = arr?.filter((val) => {
-      if (Number(val) && !isNaN(val)) {
-        return parseFloat(val);
-      }
-    });
-    return result;
-  }
-  return false;
-};
-
 export const getEquation = (arr, values) => {
   let uniqueArr = createUniqueAndValidArray(arr);
   if (uniqueArr && uniqueArr.length > 0) {
@@ -76,19 +168,7 @@ const getOprand = (value, equalNum) => {
   }
 };
 
-export const getResult = (data) => {
-  let result =
-    '((' + data[0] + ')) * ' + '(' + data[1] + ' * (' + data[2] + '))';
-
-  return result;
-};
-
-
-export const createEquation = (arr) => {
-  let uniqueArr = createUniqueAndValidArray(arr);
-}
-
-export const calculateArr = (dataArray) => {
+export const multipleEachNumInArr = (dataArray) => {
   let formatedArr = createUniqueAndValidArray(dataArray);
   let data = {};
   let result = [];
@@ -113,12 +193,3 @@ export const calculateArr = (dataArray) => {
   let unique = Array.from(new Set(result.map(JSON.stringify))).map(JSON.parse);
   return unique;
 };
-
-export const checkValuesExistInCsv = (arr, csvArr) => {
-
-  if (arr.every((r) => csvArr.includes(r))) {
-    console.log('Found all of', ar1, 'in', ar2);
-  } else {
-    return false
-  }
-}
